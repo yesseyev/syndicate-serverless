@@ -1,7 +1,7 @@
-from tests.test_lambda_hello_world import LambdaHelloWorldLambdaTestCase
+from tests.test_hello_world_test import HelloWorldTestLambdaTestCase
 
 
-class TestSuccess(LambdaHelloWorldLambdaTestCase):
+class TestSuccess(HelloWorldTestLambdaTestCase):
 
     def test_success(self):
         lambda_response = self.HANDLER.handle_request(dict(), dict())

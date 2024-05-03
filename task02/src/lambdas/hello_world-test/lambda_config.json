@@ -11,10 +11,12 @@
   "dependencies": [],
   "event_sources": [],
   "env_variables": {},
-  "publish_version": true,
+  "publish_version": false,
   "alias": "${lambdas_alias_name}",
   "url_config": {
-    "auth_type": "NONE"
+    "auth_type": "NONE",
+    "principle": "*",
+    "source_arn": "arn:aws:lambda:${region}:${account_id}:function:hello_world-test"
   },
   "ephemeral_storage": 512,
   "logs_expiration": "${logs_expiration}"

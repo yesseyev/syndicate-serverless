@@ -3,6 +3,7 @@
     "policy_content": {
       "Statement": [
         {
+          "Effect": "Allow",
           "Action": [
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
@@ -16,8 +17,16 @@
             "ssm:GetParameter",
             "kms:Decrypt"
           ],
-          "Effect": "Allow",
           "Resource": "*"
+        },
+        {
+          "Effect" : "Allow",
+          "Action" : [
+            "lambda:*"
+          ],
+          "Resource" : [
+            "*"
+          ]
         }
       ],
       "Version": "2012-10-17"

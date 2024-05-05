@@ -30,7 +30,7 @@
     "deploy_stage": "api",
     "dependencies": [
       {
-        "resource_name": "hello_world-test",
+        "resource_name": "hello_world",
         "resource_type": "lambda"
       }
     ],
@@ -41,7 +41,7 @@
           "authorization_type": "NONE",
           "integration_type": "lambda",
           "uri": "lambda",
-          "lambda_name": "hello_world-test",
+          "lambda_name": "hello_world",
           "api_key_required": false,
           "method_request_parameters": {},
           "integration_request_body_template": {},

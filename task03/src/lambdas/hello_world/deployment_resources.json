@@ -1,5 +1,5 @@
 {
-  "hello_world-test-role": {
+  "hello_world-role": {
     "predefined_policies": [],
     "principal_service": "lambda",
     "custom_policies": [

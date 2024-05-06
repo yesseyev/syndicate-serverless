@@ -53,9 +53,12 @@ class ApiHandler(AbstractLambda):
             "body": ev.content
         }
 
+        # Resolving
+        lambda_name = os.environ.get("AWS_LAMBDA_FUNCTION_NAME", "NO_NAME")
+        dyn_table = lambda_name.replace("api_handler", "Events")
+
         # add payload to DynamoDB
         dyn_resource = boto3.resource("dynamodb")
-        dyn_table = os.environ.get("dyn_table") or "Events"
         _LOG.info(f"Using table: {dyn_table}")
         table = dyn_resource.Table(dyn_table)
         table.put_item(Item=payload)

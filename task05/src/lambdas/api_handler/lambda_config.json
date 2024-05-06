@@ -15,9 +15,7 @@
     }
   ],
   "event_sources": [],
-  "env_variables": {
-    "dyn_table": "cmtr-bb5d9e90-Events"
-  },
+  "env_variables": {},
   "publish_version": true,
   "url_config": {},
   "ephemeral_storage": 512,

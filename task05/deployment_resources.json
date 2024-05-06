@@ -27,13 +27,20 @@
   "task5_api": {
     "resource_type": "api_gateway",
     "deploy_stage": "api",
-    "dependencies": [],
+    "dependencies": [
+      {
+        "resource_name": "api_handler",
+        "resource_type": "lambda"
+      }
+    ],
     "resources": {
       "/events": {
         "enable_cors": false,
         "POST": {
           "authorization_type": "NONE",
-          "integration_type": "mock",
+          "integration_type": "lambda",
+          "uri": "lambda",
+          "lambda_name": "api_handler",
           "api_key_required": false,
           "method_request_parameters": {},
           "integration_request_body_template": {},
@@ -48,8 +55,6 @@
     "resource_type": "dynamodb_table",
     "hash_key_name": "id",
     "hash_key_type": "S",
-    "sort_key_name": "principalId",
-    "sort_key_type": "N",
     "read_capacity": 1,
     "write_capacity": 1,
     "global_indexes": [],

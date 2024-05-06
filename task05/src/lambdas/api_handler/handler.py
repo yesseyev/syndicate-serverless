@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 from datetime import datetime
 from uuid import uuid4 as generate_id
@@ -47,14 +48,16 @@ class ApiHandler(AbstractLambda):
 
         payload = {
             "id": str(generate_id()),
-            "created_at": datetime.now().isoformat(),
+            "createdAt": datetime.now().isoformat(),
             "principalId": ev.principalId,
             "body": ev.content
         }
 
         # add payload to DynamoDB
         dyn_resource = boto3.resource("dynamodb")
-        table = dyn_resource.Table("Events")
+        dyn_table = os.environ.get("dyn_table") or "Events"
+        _LOG.info(f"Using table: {dyn_table}")
+        table = dyn_resource.Table(dyn_table)
         table.put_item(Item=payload)
 
         return {

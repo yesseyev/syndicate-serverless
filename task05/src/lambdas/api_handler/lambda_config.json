@@ -8,11 +8,17 @@
   "memory": 128,
   "timeout": 100,
   "lambda_path": "lambdas\\api_handler",
-  "dependencies": [],
+  "dependencies": [
+    {
+      "resource_type": "dynamodb_table",
+      "resource_name": "Events"
+    }
+  ],
   "event_sources": [],
-  "env_variables": {},
+  "env_variables": {
+    "dyn_table": "cmtr-bb5d9e90-Events"
+  },
   "publish_version": true,
-  "alias": "${lambdas_alias_name}",
   "url_config": {},
   "ephemeral_storage": 512,
   "logs_expiration": "${logs_expiration}"

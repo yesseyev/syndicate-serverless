@@ -3,8 +3,24 @@
     "predefined_policies": [],
     "principal_service": "lambda",
     "custom_policies": [
-      "lambda-basic-execution"
+      "lambda-basic-execution",
+      "sqs_handler-policy"
     ],
     "resource_type": "iam_role"
+  },
+  "sqs_handler-policy": {
+    "resource_type": "iam_policy",
+    "policy_content": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": [
+            "sqs:*"
+          ],
+          "Resource": "*",
+          "Effect": "Allow"
+        }
+      ]
+    }
   }
 }

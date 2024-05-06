@@ -10,12 +10,17 @@ class SqsHandler(AbstractLambda):
         pass
         
     def handle_request(self, event, context):
-        """
-        Explain incoming event here
-        """
-        # todo implement business logic
-        return 200
-    
+        if 'Records' not in event:
+            return "No message"
+
+        message = str(event['Records'][0]['body'])
+        _LOG.info(message)
+
+        return {
+            "statusCode": 200,
+            "message": message
+        }
+
 
 HANDLER = SqsHandler()
 

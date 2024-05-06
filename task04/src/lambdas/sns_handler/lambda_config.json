@@ -10,11 +10,17 @@
   "lambda_path": "lambdas\\sns_handler",
   "dependencies": [
     {
-      "resource_name": "lambda_topic",
-      "resource_type": "sns_topic"
+      "resource_type": "sns_topic",
+      "resource_name": "lambda_topic"
     }
   ],
-  "event_sources": [],
+  "event_sources": [
+    {
+      "resource_type": "sns_topic_trigger",
+      "target_topic": "lambda_topic",
+      "region": "eu-central-1"
+    }
+  ],
   "env_variables": {},
   "publish_version": false,
   "url_config": {},

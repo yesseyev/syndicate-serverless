@@ -12,9 +12,13 @@ class SnsHandler(AbstractLambda):
         if 'Records' not in event:
             return "No message"
 
-        message = event['Records']['Sns']['Message'][0]
+        message = event['Records'][0]['Sns']['Message']
         _LOG.info(message)
-        return message
+
+        return {
+            "statusCode": 200,
+            "message": message
+        }
 
 
 HANDLER = SnsHandler()

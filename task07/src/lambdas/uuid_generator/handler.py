@@ -23,7 +23,7 @@ class UuidGenerator(AbstractLambda):
         s3_bucket_name = lambda_name.replace('uuid_generator', 'uuid-storage')
 
         s3_client = boto3.client('s3')
-        payload_data = [str(generate_id()) for _ in range(10)]
+        payload_data = {"ids": [str(generate_id()) for _ in range(10)]}
         s3_file_key = datetime.now().isoformat()
 
         s3_client.put_object(

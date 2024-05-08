@@ -16,7 +16,14 @@ class AuditProducer(AbstractLambda):
 
     def handle_request(self, event, context):
         """
-        Explain incoming event here
+        Event:
+            'Records': [{
+                'eventName': 'MODIFY',
+                'dynamodb': {
+                    'NewImage': {'value': {'N': '1234'}, 'key': {'S': 'CMTR_CACHE'}},
+                    'OldImage': {'value': {'N': '1234'}, 'key': {'S': 'CMTR_CACHE'}},
+                }
+            }]
         """
         _LOG.info(f'Using table: \n{json.dumps(event, indent=2)}')
         # Resolving
@@ -33,18 +40,18 @@ class AuditProducer(AbstractLambda):
         recVal = record['dynamodb']
         payload = {
             'id': str(generate_id()),
-            'itemKey': recVal['newImage']['key'],
+            'itemKey': recVal['NewImage']['key']['S'],
             'modificationTime': datetime.now().isoformat()
         }
         if record['eventName'] == 'INSERT':
             payload['newValue'] = {
-                'key': recVal['newImage']['key'],
-                'value': recVal['newImage']['value']
+                'key': recVal['NewImage']['key']['S'],
+                'value': recVal['NewImage']['value']['N']
             }
         elif record['eventName'] == 'MODIFY':
             payload['updatedAttribute'] = 'value'
-            payload['oldValue'] = recVal['oldImage']['value']
-            payload['newValue'] = recVal['newImage']['value']
+            payload['oldValue'] = recVal['OldImage']['value']['N']
+            payload['newValue'] = recVal['NewImage']['value']['N']
 
         table.put_item(Item=payload)
 

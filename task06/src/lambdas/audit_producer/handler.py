@@ -46,12 +46,12 @@ class AuditProducer(AbstractLambda):
         if record['eventName'] == 'INSERT':
             payload['newValue'] = {
                 'key': recVal['NewImage']['key']['S'],
-                'value': recVal['NewImage']['value']['N']
+                'value': int(recVal['NewImage']['value']['N'])
             }
         elif record['eventName'] == 'MODIFY':
             payload['updatedAttribute'] = 'value'
-            payload['oldValue'] = recVal['OldImage']['value']['N']
-            payload['newValue'] = recVal['NewImage']['value']['N']
+            payload['oldValue'] = int(recVal['OldImage']['value']['N'])
+            payload['newValue'] = int(recVal['NewImage']['value']['N'])
 
         table.put_item(Item=payload)
 

@@ -1,29 +1,33 @@
+import asyncio
 import json
-import httpx
+from open_meteo import OpenMeteo
 
 from commons.log_helper import get_logger
 from commons.abstract_lambda import AbstractLambda
 
 
 _LOG = get_logger('ApiHandler-handler')
-_BASE_URL = "https://api.open-meteo.com/v1/forecast"
 
 
-def get_weather_forecast(latitude: float, longitude: float) -> str:
-	url = f"{_BASE_URL}?latitude={latitude}&longitude={longitude}"
-	response = httpx.get(url)
-	response.raise_for_status()
+async def get_weather_forecast(latitude: float, longitude: float) -> dict:
+	async with OpenMeteo() as open_meteo:
+		forecast = await open_meteo.forecast(
+			latitude=latitude,
+			longitude=longitude,
+			current_weather=True
+		)
 
-	return response.text
+	return forecast.dict()
 
 
 def build_response(code: int, body: str | dict) -> dict:
+	print("BODY", json.dumps(body, default=str))
 	return {
 		'statusCode': code,
 		'headers': {
 			'Content-Type': 'application/json',
 		},
-		'body': body if isinstance(body, str) else json.dumps(body),
+		'body': body if isinstance(body, str) else json.dumps(body, default=str),
 		'isBase64Encoded': False
 	}
 
@@ -48,10 +52,12 @@ class ApiHandler(AbstractLambda):
 
 		try:
 			latitude, longitude = 51.169392, 71.449074
-			weather_data = get_weather_forecast(latitude, longitude)
+			loop = asyncio.get_event_loop()
+			weather_data = loop.run_until_complete(get_weather_forecast(latitude, longitude))
 			return build_response(code=200, body=weather_data)
 
 		except Exception as exc:
+			print(exc)
 			return build_response(code=400, body="Error " + str(exc))
 
 

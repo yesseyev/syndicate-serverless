@@ -1,1 +1,1 @@
-httpx
+open-meteo

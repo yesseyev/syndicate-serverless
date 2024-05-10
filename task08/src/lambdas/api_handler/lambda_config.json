@@ -13,12 +13,11 @@
   "env_variables": {},
   "publish_version": false,
   "url_config": {
-    "auth_type": "NONE",
-    "principle": "*"
+    "auth_type": "NONE"
   },
   "ephemeral_storage": 512,
   "logs_expiration": "${logs_expiration}",
   "layers": [
-    "open-meteo-api-layer"
+    "open-meteo-layer"
   ]
 }

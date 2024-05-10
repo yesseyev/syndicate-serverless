@@ -14,10 +14,7 @@
             "dynamodb:DeleteItem",
             "ssm:PutParameter",
             "ssm:GetParameter",
-            "kms:Decrypt",
-            "lambda:InvokeFunction",
-            "lambda:InvokeFunctionUrl"
-
+            "kms:Decrypt"
           ],
           "Effect": "Allow",
           "Resource": "*"

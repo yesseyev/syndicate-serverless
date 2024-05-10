@@ -19,6 +19,6 @@
   "ephemeral_storage": 512,
   "logs_expiration": "${logs_expiration}",
   "layers": [
-    "sdk_layer"
+    "httpx_layer"
   ]
 }

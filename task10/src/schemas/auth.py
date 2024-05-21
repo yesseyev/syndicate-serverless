@@ -1,6 +1,6 @@
 import re
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 def validate_email(email):
@@ -21,8 +21,8 @@ def validate_password(password):
 class SignUpData:
 	email: str
 	password: str
-	first_name: str
-	last_name: str
+	firstName: str
+	lastName: str
 
 	def __post_init__(self):
 		validate_email(self.email)

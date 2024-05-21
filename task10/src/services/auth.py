@@ -21,8 +21,8 @@ class AuthService:
 			self._client.add_user(
 				email=ev.email,
 				password=ev.password,
-				first_name=ev.first_name,
-				last_name=ev.last_name,
+				first_name=ev.firstName,
+				last_name=ev.lastName,
 			)
 		except Exception:
 			_LOG.error("Error while cognito sign up", exc_info=True)

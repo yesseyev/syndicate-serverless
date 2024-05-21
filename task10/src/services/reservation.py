@@ -90,7 +90,7 @@ class ReservationService:
 			return 400, "There was an error in the request"
 
 		# Check if table with `tableNumber` exists
-		table_filter_expr = (Key('number').eq(ev.tableNumber),)
+		table_filter_expr = Key('number').eq(ev.tableNumber)
 		tables = self._tables_tbl.find_with_filters(table_filter_expr)
 		if not len(tables):
 			_LOG.error(f"Table with number {ev.tableNumber} is not found")

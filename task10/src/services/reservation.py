@@ -100,8 +100,8 @@ class ReservationService:
 		reservation_filter_expr = (
 			Key('tableNumber').eq(ev.tableNumber) &
 			Key('date').eq(ev.date) &
-			Attr('slotTimeStart').lt(ev.slotTimeStart) &
-			Attr('slotTimeEnd').gt(ev.slotTimeEnd)
+			Attr('slotTimeStart').lte(ev.slotTimeEnd) &
+			Attr('slotTimeEnd').gte(ev.slotTimeStart)
 		)
 		reservations = self._reservations_tbl.find_with_filters(reservation_filter_expr)
 		if len(reservations):

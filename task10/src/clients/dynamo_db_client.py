@@ -19,3 +19,6 @@ class DynamoDbClient:
 
 	def find_all(self) -> list[dict]:
 		return self._table.scan()["Items"]
+
+	def find_with_filters(self, filter_expr) -> list[dict]:
+		return self._table.scan(FilterExpression=filter_expr)["Items"]

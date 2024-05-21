@@ -43,8 +43,8 @@ class ApiHandler(AbstractLambda):
             ('POST', '/tables'): reservation_service.add_table,
             ('GET', '/tables'): reservation_service.get_tables,
             ('GET', '/tables/{tableId}'): reservation_service.get_table,
-            # ('POST', '/reservations'): add_reservation,
-            # ('GET', '/reservations'): get_reservation,
+            ('POST', '/reservations'): reservation_service.add_reservation,
+            ('GET', '/reservations'): reservation_service.get_reservations,
         }
         route = event['httpMethod'], event['resource']
 

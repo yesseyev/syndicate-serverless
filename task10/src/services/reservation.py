@@ -1,6 +1,8 @@
 from dataclasses import asdict
 from decimal import Decimal
+from uuid import uuid4 as generate_id
 
+from boto3.dynamodb.conditions import Key, Attr
 from clients.dynamo_db_client import DynamoDbClient
 from commons.log_helper import get_logger
 from schemas.reservation import ReservationData, TableData
@@ -65,3 +67,51 @@ class ReservationService:
 		result = convert_decimals_to_int(item)
 
 		return 200, result
+
+	def get_reservations(self, _):
+		try:
+			items = self._reservations_tbl.find_all()
+		except Exception:
+			_LOG.error("Error while `Reservations` scan", exc_info=True)
+			return 400, "There was an error in the request"
+
+		items = convert_decimals_to_int(items)
+		items = sorted(items, key=lambda item: item['id'])
+		result = {'reservations': items}
+		_LOG.info(f'Reservations: {result}')
+
+		return 200, result
+
+	def add_reservation(self, body):
+		try:
+			ev = ReservationData(**body)
+		except (TypeError, ValueError):
+			_LOG.error("Error with ReservationData validation", exc_info=True)
+			return 400, "There was an error in the request"
+
+		# Check if table with `tableNumber` exists
+		table_filter_expr = (Key('number').eq(ev.tableNumber),)
+		tables = self._tables_tbl.find_with_filters(table_filter_expr)
+		if not len(tables):
+			_LOG.error(f"Table with number {ev.tableNumber} is not found")
+			return 400, "There was an error in the request"
+
+		# Check if any overlapping reservations exists
+		reservation_filter_expr = (
+			Key('tableNumber').eq(ev.tableNumber) &
+			Key('date').eq(ev.date) &
+			Attr('slotTimeStart').lt(ev.slotTimeStart) &
+			Attr('slotTimeEnd').gt(ev.slotTimeEnd)
+		)
+		reservations = self._reservations_tbl.find_with_filters(reservation_filter_expr)
+		if len(reservations):
+			return 400, "There was an error in the request"
+
+		# Add reservation into DB
+		payload = {
+			"id": str(generate_id()),
+			**asdict(ev)
+		}
+		self._reservations_tbl.add_item(item=payload)
+
+		return 200, {"reservationId": payload["id"]}
